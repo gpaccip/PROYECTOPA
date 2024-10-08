@@ -6,6 +6,7 @@
 using namespace std;
 
 void menu();
+void reiniciarnotas();
 void imprimirnotas();
 void buscaralumnos();
 void agregaralumnos();
@@ -64,7 +65,7 @@ void menu(){
 				break;
 			case 3:
 				system("cls");
-				//reiniciarnotas();
+				reiniciarnotas();
 				break;
 			case 4:
 				system("cls");
@@ -185,3 +186,27 @@ void buscaralumnos(){
     return;
 }
 
+void reiniciarnotas(){
+	int opc;
+	cout<<"---------------REINICIAR NOTAS-----------------"<<endl;
+	cout<<"-----------------------------------------------"<<endl;
+	cout<<"¿ESTAS SEGURO QUE QUIERES REINICIAR LAS NOTAS?"<<endl;
+	cout<<"      1.   NO                    2.   SI      "<<endl;
+	cin>>opc;
+	switch (opc)
+	{
+	case 1:
+		return;
+		break;
+	case 2:
+		for(int i=1,i<=100,i++){
+			for(int j=1,j<=100,j++){
+				doc.alu[i].notas[j]=0;
+			}
+		}
+		break;
+	
+	default:
+		break;
+	}
+	}
