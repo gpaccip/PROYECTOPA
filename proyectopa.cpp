@@ -128,16 +128,45 @@ void imprimirnotas(){
 		switch(op){
 			case 1:
 				system("cls");
-				//agregaralumnos();
-				return; //<-- retornara hacia la funcion verificar dni
+				cout<<"Notas de los aprobados\n";
+    			cout<<"Nombre                        Notas\n";
+    			cout<<"--------------------------------------\n";
+    			for (int i = 0; i < ca ; i++) {
+        			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
+        			cout<<"\t\t"<<doc.alu[i].notas<<'\n';
+    			}
+    			cout<<endl;
+    			system("pause");
+    			system("cls");
+    			return;
 				break;
 			case 2:
 				system("cls");
-				//elimnaralumnos();
+				cout<<"Notas de los desaprobados\n";
+    			cout<<"Nombre                        Notas\n";
+    			cout<<"--------------------------------------\n";
+    			for (int i = 0; i < ca ; i++) {
+        			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
+        			cout<<"\t\t"<<doc.alu[i].notas<<'\n';
+    			}
+    			cout<<endl;
+    			system("pause");
+    			system("cls");
+    			return;
 				break;
 			case 3:
-				system("cls");
-				//reiniciarnotas();
+    			system("cls");
+    			cout<<"Notas generales de todos\n";
+    			cout<<"Nombre                        Notas\n";
+    			cout<<"--------------------------------------\n";
+    			for (int i = 0; i < ca ; i++) {
+        			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
+        			cout<<"\t\t"<<doc.alu[i].notas<<'\n';
+    			}
+    			cout<<endl;
+    			system("pause");
+    			system("cls");
+    			return;
 				break;
 			case 4:
 				system("cls");
