@@ -5,6 +5,7 @@
 using namespace std;
 
 void menu();
+void imprimirnotas();
 
 struct ALUMNOS{
 	double notas[100];
@@ -69,7 +70,7 @@ void menu(){
 				break;
 			case 6:
 				system("cls");
-				//imprimirnotas();
+				imprimirnotas();
 				break;
 			case 7:
 				system("cls");
@@ -82,6 +83,54 @@ void menu(){
             			sleep(1);
 					}
 				system("cls");
+				return;
+				break;
+			default:
+				system("cls");
+          		cout<<"Opcion invalida. Intentelo de nuevo\n";
+           		system("pause");
+          		system("cls");
+          	 	break;
+		}
+	}while(op!=0);
+	return;
+}
+
+void imprimirnotas(){
+	int op;
+	
+	do{
+	cout<<"--------------------------------------"<<endl;
+	cout<<"		Imprimir notas\n";
+	cout<<"--------------------------------------"<<endl;
+	cout<<"1.Ver aprovados"<<endl;
+	cout<<"2.Ver desaprovados"<<endl;
+	cout<<"3.General"<<endl;
+	cout<<"4.Salir"<<endl;
+	
+	cout<<"Seleccione una opcion: ";cin>>op;
+		switch(op){
+			case 1:
+				system("cls");
+				//agregaralumnos();
+				return; //<-- retornara hacia la funcion verificar dni
+				break;
+			case 2:
+				system("cls");
+				//elimnaralumnos();
+				break;
+			case 3:
+				system("cls");
+				//reiniciarnotas();
+				break;
+			case 4:
+				cout<<"Cerrando programa";
+           			for(int i=1;i<=3;i++){
+            			cout<<".";
+            			sleep(1);
+					}
+				system("cls");
+				void menu();
 				return;
 				break;
 			default:
