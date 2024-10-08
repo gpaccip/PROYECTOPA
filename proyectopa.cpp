@@ -9,6 +9,9 @@ void menu();
 struct ALUMNOS{
 	double notas[100];
 	int profinal[100];
+	string name;
+	string last;
+	string codigo;
 };
 
 struct docente{
@@ -17,6 +20,9 @@ struct docente{
 	ALUMNOS alu[100];
 }doc;
 
+int ca = 0;
+
+void agregaralumnos();
 
 int main(){
 	menu();
@@ -29,7 +35,6 @@ void menu(){
 	cout<<"-------------------------------------\n";
 	cout<<"Ingrese su nombre: ";getline(cin, doc.nombre);
 	cout<<"Ingrese apellido: ";getline(cin, doc.apellidos);
-	cin.ignore();
 	system("cls");
 	do{
 		cout<<"--------------------------------------"<<endl;
@@ -48,8 +53,8 @@ void menu(){
 		switch(op){
 			case 1:
 				system("cls");
-				//agregaralumnos();
-				return; //<-- retornara hacia la funcion verificar dni
+				agregaralumnos();
+				system("cls");
 				break;
 			case 2:
 				system("cls");
@@ -73,7 +78,7 @@ void menu(){
 				break;
 			case 7:
 				system("cls");
-				//buscaralumnos();
+				//buscaralumnos(ca-1);
 				break;
 			case 0:
 				cout<<"Cerrando programa";
@@ -94,3 +99,21 @@ void menu(){
 	}while(op!=0);
 	return;
 }
+
+void agregaralumnos(){
+	int k;
+	int i;
+	cout<<"Ingrese la cantidad de alumnos que desea ingresar: ";cin>>k;
+	for(int i=0;i<k;i++){
+		cout<<"AGREGANDO ALUMNO "<<ca+1<<": \n";
+		cout<<"Nombre: ";getline(cin,doc.alu[ca].name);
+		cin.ignore();
+		cout<<"Apellido: ";getline(cin,doc.alu[ca].last);
+		cin.ignore();
+		cout<<"Codigo: ";getline(cin,doc.alu[ca].codigo);
+		cin.ignore();
+		ca++;
+	}
+}
+
+
