@@ -1,18 +1,21 @@
 #include<iostream>
 #include<string>
 #include<iomanip>
+#include<unistd.h>
 #include<windows.h>
 using namespace std;
 
 void menu();
 void imprimirnotas();
+void buscaralumnos();
+void agregaralumnos();
 
 struct ALUMNOS{
 	double notas[100];
 	int profinal[100];
 	string name;
 	string last;
-	string codigo;
+	int codigo;
 };
 
 struct docente{
@@ -22,8 +25,6 @@ struct docente{
 }doc;
 
 int ca = 0;
-
-void agregaralumnos();
 
 int main(){
 	menu();
@@ -36,6 +37,7 @@ void menu(){
 	cout<<"-------------------------------------\n";
 	cout<<"Ingrese su nombre: ";getline(cin, doc.nombre);
 	cout<<"Ingrese apellido: ";getline(cin, doc.apellidos);
+	system("pause");
 	system("cls");
 	do{
 		cout<<"--------------------------------------"<<endl;
@@ -55,7 +57,6 @@ void menu(){
 			case 1:
 				system("cls");
 				agregaralumnos();
-				system("cls");
 				break;
 			case 2:
 				system("cls");
@@ -79,7 +80,7 @@ void menu(){
 				break;
 			case 7:
 				system("cls");
-				//buscaralumnos(ca-1);
+				buscaralumnos();
 				break;
 			case 0:
 				cout<<"Cerrando programa";
@@ -88,7 +89,6 @@ void menu(){
             			sleep(1);
 					}
 				system("cls");
-				return;
 				break;
 			default:
 				system("cls");
@@ -105,15 +105,15 @@ void agregaralumnos(){
 	int k;
 	cout<<"Ingrese la cantidad de alumnos que desea ingresar: ";cin>>k;
 	for(int i=0;i<k;i++){
+		cin.ignore();
 		cout<<"AGREGANDO ALUMNO "<<ca+1<<": \n";
 		cout<<"Nombre: ";getline(cin,doc.alu[ca].name);
-		cin.ignore();
 		cout<<"Apellido: ";getline(cin,doc.alu[ca].last);
-		cin.ignore();
-		cout<<"Codigo: ";getline(cin,doc.alu[ca].codigo);
-		cin.ignore();
+		cout<<"Codigo: ";cin>>doc.alu[ca].codigo;
 		ca++;
 	}
+	system("cls");
+	return;
 }
 
 void imprimirnotas(){
@@ -163,3 +163,25 @@ void imprimirnotas(){
 	}while(op!=0);
 	return;
 }
+
+void buscaralumnos(){
+	int k;
+	int b;
+	cout<<"INGRESE EL CODIGO DE UN ALUMNO: ";cin>>k;
+	bool encontrado=false;
+	for(int i=0;i<ca;i++){
+		if(doc.alu[i].codigo==k){
+			b=i;
+			encontrado = true;
+		}
+	}
+	if(encontrado){
+		cout<<"Elemento encontrado\n"<<b;
+	} else {
+		cout<<"Elemento no encontrado\n";
+	}
+	system("pause");
+	system("cls");
+    return;
+}
+
