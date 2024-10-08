@@ -10,6 +10,7 @@ void reiniciarnotas();
 void imprimirnotas();
 void buscaralumnos();
 void agregaralumnos();
+void quitarnotas();
 
 struct ALUMNOS{
 	double notas[100];
@@ -47,10 +48,8 @@ void menu(){
 		cout<<"\t1. Agregar alumnos\n"; //codigo, nombre, apellidos,
 		cout<<"\t2. Eliminar alumnos\n";
 		cout<<"\t3. Reiniciar notas\n";
-		cout<<"\t4. Agregar notas\n";
-		cout<<"\t5. Quitar notas\n";
-		cout<<"\t6. Imprimir notas\n";	//1. Aprobados 2. Desaprobados 3. En general 0. volver	
-		cout<<"\t7. Buscar alumnos\n"; //1. Buscar por codigo	
+		cout<<"\t4. Imprimir notas\n";	//1. Aprobados 2. Desaprobados 3. En general 0. volver	
+		cout<<"\t5. Buscar alumnos\n"; //1. Buscar por codigo 1.Quitar notas 2. Agregar notas	
 		cout<<"\t0. Salir\n";
 		cout<<"--------------------------------------"<<endl;
 		cout<<"Seleccione una opcion: ";cin>>op;
@@ -69,17 +68,9 @@ void menu(){
 				break;
 			case 4:
 				system("cls");
-				//agregarnotas();
-				break;
-			case 5:
-				system("cls");
-				//quitarnotas();
-				break;
-			case 6:
-				system("cls");
 				imprimirnotas();
 				break;
-			case 7:
+			case 5:
 				system("cls");
 				buscaralumnos();
 				break;
@@ -100,6 +91,10 @@ void menu(){
 		}
 	}while(op!=0);
 	return;
+}
+
+void quitarnotas(){
+	
 }
 
 void agregaralumnos(){
@@ -145,13 +140,7 @@ void imprimirnotas(){
 				//reiniciarnotas();
 				break;
 			case 4:
-				cout<<"Cerrando programa";
-           			for(int i=1;i<=3;i++){
-            			cout<<".";
-            			sleep(1);
-					}
 				system("cls");
-				void menu();
 				return;
 				break;
 			default:
@@ -177,7 +166,37 @@ void buscaralumnos(){
 		}
 	}
 	if(encontrado){
-		cout<<"Elemento encontrado\n"<<b;
+		cout<<"Elemento encontrado\n";
+		cout<<"ALUMNO\t\t\tNOTAS\n";
+		cout<<"-----------------------------------\n";
+		cout<<doc.alu[b].last<<"  "<<doc.alu[b].name<<"\t";
+		for(int i=0;i<3;i++){
+			cout<<doc.alu[b].notas[i]<<" ";
+		}
+		int op;
+		do{
+			cout<<"1. Borrar nota\n2. Agregar nota\n0. Volver\nSeleccione una opcion: ";cin>>op;
+			switch(op){
+				case 1:
+					system("cls");
+					//borrarnota();
+					break;
+				case 2:
+					system("cls");
+					//agregarnota();
+					break;
+				case 0:
+					system("cls");
+					return;
+				default:
+					system("cls");
+          			cout<<"Opcion invalida. Intentelo de nuevo\n";
+           			system("pause");
+          			system("cls");
+          	 		break;	
+			}
+		}while(op!=0);
+		system("pause");
 	} else {
 		cout<<"Elemento no encontrado\n";
 	}
@@ -199,8 +218,8 @@ void reiniciarnotas(){
 		return;
 		break;
 	case 2:
-		for(int i=1,i<=100,i++){
-			for(int j=1,j<=100,j++){
+		for(int i=0;i<ca;i++){
+			for(int j=0;j<ca;j++){
 				doc.alu[i].notas[j]=0;
 			}
 		}
