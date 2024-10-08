@@ -11,6 +11,7 @@ void imprimirnotas();
 void buscaralumnos();
 void agregaralumnos();
 void quitarnotas();
+void quitarnotas(int n);
 
 struct ALUMNOS{
 	double notas[100];
@@ -93,8 +94,20 @@ void menu(){
 	return;
 }
 
-void quitarnotas(){
-	
+void borrarnota(int n){
+	int b;
+	cout<<"Ingrese la casilla de la nota que quiere eliminar: ";cin>>b;
+	doc.alu[n].notas[b-1]=0;
+	system("cls");
+	return;
+}
+
+void agregarnota(int n){
+	int b;
+	cout<<"Ingrese la casilla de la nota que quieres agregar: ";cin>>b;
+	cout<<"Ingrese la nota: ";cin>>doc.alu[n].notas[b-1];
+	system("cls");
+	return;
 }
 
 void agregaralumnos(){
@@ -119,8 +132,8 @@ void imprimirnotas(){
 	cout<<"--------------------------------------"<<endl;
 	cout<<"		Imprimir notas\n";
 	cout<<"--------------------------------------"<<endl;
-	cout<<"1.Ver aprovados"<<endl;
-	cout<<"2.Ver desaprovados"<<endl;
+	cout<<"1.Ver aprobados"<<endl;
+	cout<<"2.Ver desaprobados"<<endl;
 	cout<<"3.General"<<endl;
 	cout<<"4.Salir"<<endl;
 	
@@ -129,7 +142,7 @@ void imprimirnotas(){
 			case 1:
 				system("cls");
 				//agregaralumnos();
-				return; //<-- retornara hacia la funcion verificar dni
+				return; 
 				break;
 			case 2:
 				system("cls");
@@ -166,24 +179,25 @@ void buscaralumnos(){
 		}
 	}
 	if(encontrado){
-		cout<<"Elemento encontrado\n";
-		cout<<"ALUMNO\t\t\tNOTAS\n";
-		cout<<"-----------------------------------\n";
-		cout<<doc.alu[b].last<<"  "<<doc.alu[b].name<<"\t";
-		for(int i=0;i<3;i++){
-			cout<<doc.alu[b].notas[i]<<" ";
-		}
+		cout<<endl;
 		int op;
 		do{
+			cout<<"ALUMNO\t\t\tNOTAS\n";
+			cout<<"-----------------------------------\n";
+			cout<<doc.alu[b].last<<"  "<<doc.alu[b].name<<"\t\t";
+			for(int i=0;i<3;i++){
+				cout<<doc.alu[b].notas[i]<<" ";
+			}
+			cout<<endl;
 			cout<<"1. Borrar nota\n2. Agregar nota\n0. Volver\nSeleccione una opcion: ";cin>>op;
 			switch(op){
 				case 1:
 					system("cls");
-					//borrarnota();
+					borrarnota(b);
 					break;
 				case 2:
 					system("cls");
-					//agregarnota();
+					agregarnota(b);
 					break;
 				case 0:
 					system("cls");
