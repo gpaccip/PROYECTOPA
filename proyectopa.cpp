@@ -10,8 +10,8 @@ void reiniciarnotas();
 void imprimirnotas();
 void buscaralumnos();
 void agregaralumnos();
-void quitarnotas();
-void quitarnotas(int n);
+void borrarnota(int n);
+void agregarnota(int n);
 
 struct ALUMNOS{
 	double notas[100];
