@@ -12,6 +12,7 @@ void buscaralumnos();
 void agregaralumnos();
 void borrarnota(int n);
 void agregarnota(int n);
+void eliminaralumnos();
 
 struct ALUMNOS{
 	double notas[100];
@@ -61,7 +62,7 @@ void menu(){
 				break;
 			case 2:
 				system("cls");
-				//elimnaralumnos();
+				eliminaralumnos();
 				break;
 			case 3:
 				system("cls");
@@ -271,4 +272,34 @@ void reiniciarnotas(){
 	default:
 		break;
 	}
-	}
+}
+
+void eliminaralumnos(){
+	int cod;
+	
+	cout<<"---------------Elimnar alumnos-----------------"<<endl;
+	cout<<"-----------------------------------------------"<<endl;
+	cout<<endl;
+    cout<<"Ingrese el codigo del alumno a eliminar: ";
+    cin>>cod;
+    
+    int i;
+    for(i = 0; i < ca; i++) {
+        if (doc.alu[i].codigo == cod) {
+            break;
+        }
+    }
+    
+    if(i<ca) {
+        for(int j=i;j<ca-1;j++) {
+            doc.alu[j].codigo = doc.alu[j+1].codigo;
+        }
+        ca--;
+        cout<<"Alumno eliminado con exito.\n";
+    } else {
+        cout<<"Alumno no encontrado.\n";
+    }
+	system("pause");
+    system("cls");
+	return;
+}
