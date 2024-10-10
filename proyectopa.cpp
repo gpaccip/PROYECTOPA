@@ -112,16 +112,22 @@ void agregarnota(int n){
 }
 
 void agregaralumnos(){
-	int k;
-	cout<<"Ingrese la cantidad de alumnos que desea ingresar: ";cin>>k;
-	for(int i=0;i<k;i++){
+	bool k=true;
+	int n;
+	do{
 		cin.ignore();
 		cout<<"AGREGANDO ALUMNO "<<ca+1<<": \n";
 		cout<<"Nombre: ";getline(cin,doc.alu[ca].name);
 		cout<<"Apellido: ";getline(cin,doc.alu[ca].last);
 		cout<<"Codigo: ";cin>>doc.alu[ca].codigo;
 		ca++;
-	}
+		cout<<"Desea seguir agregando alumnos?(Si:1)(No:0): ";cin>>n;
+		if(n==1){
+			k=true;
+		} else{
+			k=false;
+		}
+	}while(k);
 	system("cls");
 	return;
 }
@@ -276,7 +282,7 @@ void reiniciarnotas(){
 
 void eliminaralumnos(){
 	int cod;
-	
+	if(ca!=0){
 	cout<<"---------------Elimnar alumnos-----------------"<<endl;
 	cout<<"-----------------------------------------------"<<endl;
 	cout<<endl;
@@ -296,9 +302,10 @@ void eliminaralumnos(){
         }
         ca--;
         cout<<"Alumno eliminado con exito.\n";
-    } else {
-        cout<<"Alumno no encontrado.\n";
     }
+	}else{
+		cout<<"No hay registros de alumnos. \n";
+	}
 	system("pause");
     system("cls");
 	return;
