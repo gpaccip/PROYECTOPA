@@ -6,6 +6,9 @@
 using namespace std;
 
 void menu();
+void notimpr(int j);
+void desaprovados();
+void aprovados();
 void reiniciarnotas();
 void imprimirnotas();
 void buscaralumnos();
@@ -143,12 +146,7 @@ void imprimirnotas(){
 			case 1:
 				system("cls");
 				cout<<"Notas de los aprobados\n";
-    			cout<<"Nombre                        Notas\n";
-    			cout<<"--------------------------------------\n";
-    			for (int i = 0; i < ca ; i++) {
-        			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-        			cout<<"\t\t"<<doc.alu[i].notas<<'\n';
-    			}
+    			aprovados();
     			cout<<endl;
     			system("pause");
     			system("cls");
@@ -157,12 +155,7 @@ void imprimirnotas(){
 			case 2:
 				system("cls");
 				cout<<"Notas de los desaprobados\n";
-    			cout<<"Nombre                        Notas\n";
-    			cout<<"--------------------------------------\n";
-    			for (int i = 0; i < ca ; i++) {
-        			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-        			cout<<"\t\t"<<doc.alu[i].notas<<'\n';
-    			}
+    			desaprovados();
     			cout<<endl;
     			system("pause");
     			system("cls");
@@ -175,7 +168,9 @@ void imprimirnotas(){
     			cout<<"--------------------------------------\n";
     			for (int i = 0; i < ca ; i++) {
         			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-        			cout<<"\t\t"<<doc.alu[i].notas<<'\n';
+        			cout<<"\t\t";
+					notimpr(i);
+					cout<<'\n';
     			}
     			cout<<endl;
     			system("pause");
@@ -253,7 +248,7 @@ void reiniciarnotas(){
 	int opc;
 	cout<<"---------------REINICIAR NOTAS-----------------"<<endl;
 	cout<<"-----------------------------------------------"<<endl;
-	cout<<"Â¿ESTAS SEGURO QUE QUIERES REINICIAR LAS NOTAS?"<<endl;
+	cout<<"¿ESTAS SEGURO QUE QUIERES REINICIAR LAS NOTAS?"<<endl;
 	cout<<"      1.   NO                    2.   SI      "<<endl;
 	cin>>opc;
 	switch (opc)
@@ -302,4 +297,35 @@ void eliminaralumnos(){
 	system("pause");
     system("cls");
 	return;
+}
+
+void aprovados(){
+	cout<<"Nombre                        Notas\n";
+	for(int i=1; i<=ca;i++){
+		if(doc.alu[i].profinal[1]>=11){
+			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
+       		cout<<"\t\t";
+			notimpr(i);
+			cout<<'\n';	
+		}
+	}
+}
+
+void desaprovados(){
+	cout<<"Nombre                        Notas\n";
+	for(int i=1; i<=ca;i++){
+		if(doc.alu[i].profinal[1]<11){
+			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
+			cout<<"\t\t";
+			notimpr(i);
+			cout<<'\n';	
+		}
+	}
+}
+
+
+void notimpr(int j){
+	for(int i=1;i<=3;i++){
+		cout<<doc.alu[i].notas[j];
+	}
 }
