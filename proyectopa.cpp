@@ -6,20 +6,21 @@
 using namespace std;
 
 void menu();
-void notimpr(int j);
-void desaprovados();
-void aprovados();
+void notimpr(int j,int c);
+void desaprovados(int c);
+void aprovados(int c);
 void reiniciarnotas();
-void imprimirnotas();
-void buscaralumnos();
+void imprimirnotas(int c);
+void buscaralumnos(int c);
 void agregaralumnos();
 void borrarnota(int n);
 void agregarnota(int n);
 void eliminaralumnos();
+int suma(int n,int c);
 
 struct ALUMNOS{
 	double notas[100];
-	int profinal[100];
+	int profinal;
 	string name;
 	string last;
 	int codigo;
@@ -39,7 +40,7 @@ int main(){
 }
 
 void menu(){
-	int op;
+	int op,c;
 	cout<<setw(10)<<"BIENVENIDO DOCENTE"<<endl;
 	cout<<"-------------------------------------\n";
 	cout<<"Ingrese su nombre: ";getline(cin, doc.nombre);
@@ -55,6 +56,7 @@ void menu(){
 		cout<<"\t3. Reiniciar notas\n";
 		cout<<"\t4. Imprimir notas\n";	//1. Aprobados 2. Desaprobados 3. En general 0. volver	
 		cout<<"\t5. Buscar alumnos\n"; //1. Buscar por codigo 1.Quitar notas 2. Agregar notas	
+		cout<<"\t6. INGRESE LA CANTIDAD DE NOTAS QUE QUIERE AÑADIR\n";
 		cout<<"\t0. Salir\n";
 		cout<<"--------------------------------------"<<endl;
 		cout<<"Seleccione una opcion: ";cin>>op;
@@ -73,11 +75,17 @@ void menu(){
 				break;
 			case 4:
 				system("cls");
-				imprimirnotas();
+				imprimirnotas(c);
 				break;
 			case 5:
 				system("cls");
-				buscaralumnos();
+				buscaralumnos(c);
+				break;
+			case 6:
+				system("cls");
+				cout<<"Ingrese la cantidad (1-10): ";cin>>c;
+				system("pause");
+				system("cls");
 				break;
 			case 0:
 				cout<<"Cerrando programa";
@@ -98,20 +106,32 @@ void menu(){
 	return;
 }
 
-void borrarnota(int n){
+void borrarnota(int n,int c){
 	int b;
 	cout<<"Ingrese la casilla de la nota que quiere eliminar: ";cin>>b;
 	doc.alu[n].notas[b-1]=0;
+	doc.alu[n].profinal=(suma(n,c))/c;
 	system("cls");
 	return;
 }
 
-void agregarnota(int n){
+void agregarnota(int n,int c){
 	int b;
 	cout<<"Ingrese la casilla de la nota que quieres agregar: ";cin>>b;
 	cout<<"Ingrese la nota: ";cin>>doc.alu[n].notas[b-1];
+	doc.alu[n].profinal=(suma(n,c))/c;
 	system("cls");
 	return;
+}
+
+int suma(int n,int c){
+	if(c<0){
+		return 0;
+	}else{
+		int s=0;
+		s=doc.alu[n].notas[c]+suma(n,c-1);
+		return s;
+	}
 }
 
 void agregaralumnos(){
@@ -135,7 +155,7 @@ void agregaralumnos(){
 	return;
 }
 
-void imprimirnotas(){
+void imprimirnotas(int c){
 	int op;
 	
 	do{
@@ -144,15 +164,16 @@ void imprimirnotas(){
 	cout<<"--------------------------------------"<<endl;
 	cout<<"1.Ver aprobados"<<endl;
 	cout<<"2.Ver desaprobados"<<endl;
-	cout<<"3.General"<<endl;
-	cout<<"4.Salir"<<endl;
+	cout<<"3.Promedio General"<<endl;
+	cout<<"4.Notas Generales"<<endl;
+	cout<<"5.Salir"<<endl;
 	
 	cout<<"Seleccione una opcion: ";cin>>op;
 		switch(op){
 			case 1:
 				system("cls");
 				cout<<"Notas de los aprobados\n";
-    			aprovados();
+    			aprovados(c);
     			cout<<endl;
     			system("pause");
     			system("cls");
@@ -161,7 +182,7 @@ void imprimirnotas(){
 			case 2:
 				system("cls");
 				cout<<"Notas de los desaprobados\n";
-    			desaprovados();
+    			desaprovados(c); 
     			cout<<endl;
     			system("pause");
     			system("cls");
@@ -169,13 +190,12 @@ void imprimirnotas(){
 				break;
 			case 3:
     			system("cls");
-    			cout<<"Notas generales de todos\n";
-    			cout<<"Nombre                        Notas\n";
+    			cout<<"Notas promedio generales de todos\n";
+    			cout<<"Nombre                           Notas\n";
     			cout<<"--------------------------------------\n";
     			for (int i = 0; i < ca ; i++) {
         			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-        			cout<<"\t\t";
-					notimpr(i);
+        			cout<<"\t\t"<<doc.alu[i].profinal;
 					cout<<'\n';
     			}
     			cout<<endl;
@@ -184,6 +204,21 @@ void imprimirnotas(){
     			return;
 				break;
 			case 4:
+				system("cls");
+				cout<<"Notas Generales\n";
+    			cout<<"Nombre                           Notas\n";
+    			cout<<"--------------------------------------\n";
+    			for (int i = 0; i < ca ; i++) {
+        			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
+        			cout<<"\t\t";notimpr(i,c);
+					cout<<'\n';
+    			}
+    			cout<<endl;
+    			system("pause");
+    			system("cls");
+    			return;
+				break;
+			case 5:
 				system("cls");
 				return;
 				break;
@@ -198,7 +233,7 @@ void imprimirnotas(){
 	return;
 }
 
-void buscaralumnos(){
+void buscaralumnos(int c){
 	int k;
 	int b;
 	cout<<"INGRESE EL CODIGO DE UN ALUMNO: ";cin>>k;
@@ -216,7 +251,7 @@ void buscaralumnos(){
 			cout<<"ALUMNO\t\t\tNOTAS\n";
 			cout<<"-----------------------------------\n";
 			cout<<doc.alu[b].last<<"  "<<doc.alu[b].name<<"\t\t";
-			for(int i=0;i<3;i++){
+			for(int i=0;i<c;i++){
 				cout<<doc.alu[b].notas[i]<<" ";
 			}
 			cout<<endl;
@@ -224,11 +259,11 @@ void buscaralumnos(){
 			switch(op){
 				case 1:
 					system("cls");
-					borrarnota(b);
+					borrarnota(b,c);
 					break;
 				case 2:
 					system("cls");
-					agregarnota(b);
+					agregarnota(b,c);
 					break;
 				case 0:
 					system("cls");
@@ -242,7 +277,7 @@ void buscaralumnos(){
 			}
 		}while(op!=0);
 		system("pause");
-	} else {
+	}else{
 		cout<<"Elemento no encontrado\n";
 	}
 	system("pause");
@@ -254,7 +289,7 @@ void reiniciarnotas(){
 	int opc;
 	cout<<"---------------REINICIAR NOTAS-----------------"<<endl;
 	cout<<"-----------------------------------------------"<<endl;
-	cout<<"�ESTAS SEGURO QUE QUIERES REINICIAR LAS NOTAS?"<<endl;
+	cout<<"¿ESTAS SEGURO QUE QUIERES REINICIAR LAS NOTAS?"<<endl;
 	cout<<"      1.   NO                    2.   SI      "<<endl;
 	cin>>opc;
 	switch (opc)
@@ -306,33 +341,30 @@ void eliminaralumnos(){
 	return;
 }
 
-void aprovados(){
+void aprovados(int c){
 	cout<<"Nombre                        Notas\n";
-	for(int i=1; i<=ca;i++){
-		if(doc.alu[i].profinal[1]>=11){
+	for(int i=0; i<ca;i++){
+		if(doc.alu[i].profinal>=11){
 			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-       		cout<<"\t\t";
-			notimpr(i);
+			cout<<"\t\t"<<doc.alu[i].profinal;
 			cout<<'\n';	
 		}
 	}
 }
 
-void desaprovados(){
-	cout<<"Nombre                        Notas\n";
-	for(int i=1; i<=ca;i++){
-		if(doc.alu[i].profinal[1]<11){
+void desaprovados(int c){
+	cout<<"Nombre                        Promedio\n";
+	for(int i=0; i<ca;i++){
+		if(doc.alu[i].profinal<11){
 			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-			cout<<"\t\t";
-			notimpr(i);
+			cout<<"\t\t"<<doc.alu[i].profinal;
 			cout<<'\n';	
 		}
 	}
 }
 
-
-void notimpr(int j){
-	for(int i=1;i<=3;i++){
-		cout<<doc.alu[i].notas[j];
+void notimpr(int j,int c){
+	for(int i=0;i<c;i++){
+		cout<<doc.alu[j].notas[i]<<" ";
 	}
 }
