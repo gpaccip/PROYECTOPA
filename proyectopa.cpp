@@ -3,7 +3,9 @@
 #include<iomanip>
 #include<unistd.h>
 #include<windows.h>
+#include<conio.h>
 using namespace std;
+
 
 void menu();
 void quicksort(double P[], int primero, int ultimo);
@@ -19,10 +21,11 @@ void borrarnota(int n);
 void agregarnota(int n);
 void eliminaralumnos();
 int suma(int n,int c);
+void gotoxy(int x,int y);
 
 struct ALUMNOS{
-	double notas[100];
-	int profinal;
+	double notas[100]={0};
+	int profinal=0;
 	string name;
 	string last;
 	int codigo;
@@ -59,7 +62,7 @@ void menu(){
 		cout<<"\t3. Reiniciar notas\n";
 		cout<<"\t4. Imprimir notas\n";	//1. Aprobados 2. Desaprobados 3. En general 0. volver	
 		cout<<"\t5. Buscar alumnos\n"; //1. Buscar por codigo 1.Quitar notas 2. Agregar notas	
-		cout<<"\t6. INGRESE LA CANTIDAD DE NOTAS QUE QUIERE AÑADIR\n";
+		cout<<"\t6. INGRESE LA CANTIDAD DE NOTAS QUE QUIERE ANADIR\n";
 		cout<<"\t0. Salir\n";
 		cout<<"--------------------------------------"<<endl;
 		cout<<"Seleccione una opcion: ";cin>>op;
@@ -87,6 +90,9 @@ void menu(){
 			case 6:
 				system("cls");
 				cout<<"Ingrese la cantidad (1-10): ";cin>>c;
+				if(c>10||c<1){
+					cout<<"\nIngrese una cantidad no mayor que 10 ni menor que 1 \n\n";
+				}
 				system("pause");
 				system("cls");
 				break;
@@ -111,20 +117,34 @@ void menu(){
 
 void borrarnota(int n,int c){
 	int b;
-	cout<<"Ingrese la casilla de la nota que quiere eliminar: ";cin>>b;
+	cout<<"Ingrese la casilla de la nota que quiere eliminar ("<<c<<"): ";cin>>b;
+	if(b<c&&b>=0){
 	doc.alu[n].notas[b-1]=0;
-	doc.alu[n].profinal=(suma(n,c))/c;
+	doc.alu[n].profinal=(suma(n,c-1))/c;
 	system("cls");
 	return;
+	} else{
+		cout<<"Ingrese primero la cantidad de notas: \n";
+		system("pause");
+		system("cls");
+		return;
+	}
 }
 
 void agregarnota(int n,int c){
 	int b;
-	cout<<"Ingrese la casilla de la nota que quieres agregar: ";cin>>b;
+	cout<<"Ingrese la casilla de la nota que quieres agregar ("<<c<<"): ";cin>>b;
+	if(b<c&&b>=0){
 	cout<<"Ingrese la nota: ";cin>>doc.alu[n].notas[b-1];
-	doc.alu[n].profinal=(suma(n,c))/c;
+	doc.alu[n].profinal=(suma(n,c-1))/c;
 	system("cls");
 	return;
+	}else{
+		cout<<"Ingrese primero la cantidad de notas: \n";
+		system("pause");
+		system("cls");
+		return;
+	}
 }
 
 int suma(int n,int c){
@@ -175,7 +195,6 @@ void imprimirnotas(int c){
 		switch(op){
 			case 1:
 				system("cls");
-				cout<<"Notas de los aprobados\n";
     			aprovados(c);
     			cout<<endl;
     			system("pause");
@@ -184,7 +203,6 @@ void imprimirnotas(int c){
 				break;
 			case 2:
 				system("cls");
-				cout<<"Notas de los desaprobados\n";
     			desaprovados(c); 
     			cout<<endl;
     			system("pause");
@@ -194,11 +212,11 @@ void imprimirnotas(int c){
 			case 3:
     			system("cls");
     			cout<<"Notas promedio generales de todos\n";
-    			cout<<"Nombre                           Notas\n";
-    			cout<<"--------------------------------------\n";
+    			cout<<"Nombre\t\t\t\t\t\tNotas\n";
+    			cout<<"-------------------------------------------------------\n";
     			for (int i = 0; i < ca ; i++) {
         			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-        			cout<<"\t\t"<<doc.alu[i].profinal;
+        			gotoxy(50,i+3);cout<<doc.alu[i].profinal;
 					cout<<'\n';
     			}
     			cout<<endl;
@@ -209,11 +227,11 @@ void imprimirnotas(int c){
 			case 4:
 				system("cls");
 				cout<<"Notas Generales\n";
-    			cout<<"Nombre                           Notas\n";
-    			cout<<"--------------------------------------\n";
+    			cout<<"Nombre\t\t\t\t\t\tNotas\n";
+    			cout<<"-------------------------------------------------------\n";
     			for (int i = 0; i < ca ; i++) {
         			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-        			cout<<"\t\t";notimpr(i,c);
+        			gotoxy(50,i+3);notimpr(i,c);
 					cout<<'\n';
     			}
     			cout<<endl;
@@ -251,9 +269,10 @@ void buscaralumnos(int c){
 		cout<<endl;
 		int op;
 		do{
-			cout<<"ALUMNO\t\t\tNOTAS\n";
-			cout<<"-----------------------------------\n";
-			cout<<doc.alu[b].last<<"  "<<doc.alu[b].name<<"\t\t";
+			cout<<"ALUMNO\t\t\t\t\tNOTAS\n";
+    		cout<<"-------------------------------------------------------\n";
+			cout<<doc.alu[b].last<<"  "<<doc.alu[b].name;
+			gotoxy(50,4);
 			for(int i=0;i<c;i++){
 				cout<<doc.alu[b].notas[i]<<" ";
 			}
@@ -282,7 +301,7 @@ void buscaralumnos(int c){
 		}while(op!=0);
 		system("pause");
 	}else{
-		cout<<"Elemento no encontrado\n";
+		cout<<"Alumno no encontrado\n";
 	}
 	system("pause");
 	system("cls");
@@ -316,7 +335,7 @@ void reiniciarnotas(){
 
 void eliminaralumnos(){
 	int cod;
-	if(ca!=0){
+	if(ca>=0){
 	cout<<"---------------Elimnar alumnos-----------------"<<endl;
 	cout<<"-----------------------------------------------"<<endl;
 	cout<<endl;
@@ -346,22 +365,26 @@ void eliminaralumnos(){
 }
 
 void aprovados(int c){
-	cout<<"Nombre                        Notas\n";
+	cout<<"Notas de los aprobados\n";
+	cout<<"Nombre\t\t\t\t\t\tPromedio\n";
+	cout<<"-------------------------------------------------------\n";
 	for(int i=0; i<ca;i++){
 		if(doc.alu[i].profinal>=11){
 			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-			cout<<"\t\t"<<doc.alu[i].profinal;
+			gotoxy(50,i+3);cout<<doc.alu[i].profinal;
 			cout<<'\n';	
 		}
 	}
 }
 
 void desaprovados(int c){
-	cout<<"Nombre                        Promedio\n";
+	cout<<"Notas de los desaprobados\n";
+	cout<<"Nombre\t\t\t\t\t\tPromedio\n";
+	cout<<"-------------------------------------------------------\n";
 	for(int i=0; i<ca;i++){
 		if(doc.alu[i].profinal<11){
 			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-			cout<<"\t\t"<<doc.alu[i].profinal;
+			gotoxy(50,i+3);cout<<doc.alu[i].profinal;
 			cout<<'\n';	
 		}
 	}
@@ -373,6 +396,13 @@ void notimpr(int j,int c){
 	}
 }
 
+void gotoxy(int x,int y){
+	HANDLE hacon=GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD dwPos;
+	dwPos.X=x;
+	dwPos.Y=y;
+	SetConsoleCursorPosition(hacon,dwPos);
+}
 
 void quicksort(double P[], int primero, int ultimo){
     int central, i, j;
