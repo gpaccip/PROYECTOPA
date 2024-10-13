@@ -6,6 +6,8 @@
 using namespace std;
 
 void menu();
+void quicksort(double P[], int primero, int ultimo);
+void arrayprofin();
 void notimpr(int j,int c);
 void desaprovados(int c);
 void aprovados(int c);
@@ -33,6 +35,7 @@ struct docente{
 }doc;
 
 int ca = 0;
+double proFor[100];
 
 int main(){
 	menu();
@@ -264,6 +267,7 @@ void buscaralumnos(int c){
 				case 2:
 					system("cls");
 					agregarnota(b,c);
+					arrayprofin();
 					break;
 				case 0:
 					system("cls");
@@ -367,4 +371,43 @@ void notimpr(int j,int c){
 	for(int i=0;i<c;i++){
 		cout<<doc.alu[j].notas[i]<<" ";
 	}
+}
+
+
+void quicksort(double P[], int primero, int ultimo){
+    int central, i, j;
+    double pivote;
+
+    central = (primero + ultimo) / 2;
+    pivote = P[central];
+    i = primero;
+    j = ultimo;
+
+    do {
+        while (P[i] < pivote) i++;
+        while (P[j] > pivote) j--;
+
+        if (i <= j) {
+            double temp;
+            temp = P[i];
+            P[i] = P[j];
+            P[j] = temp;
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+    if (primero < j) {
+        quicksort(P, primero, j);  // mismo proceso con sublista izquierda
+    }
+    if (i < ultimo) {
+        quicksort(P, i, ultimo);  // mismo proceso con sublista derecha
+    }
+}
+
+void arrayprofin(){
+	for(int i=0;i<ca;i++){
+		proFor[i]=doc.alu[i].profinal;
+	}
+	quicksort(proFor, 0, ca - 1);
 }
