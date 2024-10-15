@@ -4,10 +4,18 @@
 #include<unistd.h>
 #include<windows.h>
 #include<conio.h>
+
+#include <limits>
+#include <algorithm>
+
 using namespace std;
 
 
 void menu();
+int ValidaEntero();
+string ValidaTexto();
+bool ValidarCodigo(const string& codigo);
+string ValidaCodigo();
 void quicksort(int primero, int ultimo);
 void notimpr(int j,int c);
 void desaprovados();
@@ -27,7 +35,7 @@ struct ALUMNOS{
 	int profinal=0;
 	string name;
 	string last;
-	int codigo;
+	string codigo;
 };
 
 struct docente{
@@ -43,12 +51,82 @@ int main(){
 	return 0;
 }
 
+int ValidaEntero() {
+    int Ent;
+    while (true){
+        cin>>Ent;
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout<<"Entrada no valida. Por favor, ingrese un numero entero."<<endl;
+        } else {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return Ent;
+        }
+    }
+}
+
+string ValidaTexto(){
+    string texto;
+    while (true){
+        getline(cin, texto);  
+        bool Validad=true;
+        for (char c:texto){
+            if (!isalpha(c) && !isspace(c)){
+                cout<<"El texto solo debe contener letras y espacios."<<endl;
+                Validad=false;
+                break;
+            }
+        }
+        if (Validad){
+            return texto;
+        }
+    }
+}
+
+bool ValidarCodigo(const string& codigo){
+    if (codigo.length() != 11){
+        return false;
+    }
+    for (int i=0; i<4; i++){
+        if (!isdigit(codigo[i])){
+            return false;
+        }
+    }
+    if (codigo[4]!='-'){
+        return false;
+    }
+    for (int i=5; i<11; i++){
+        if (!isdigit(codigo[i])){
+            return false;
+        }
+    }
+    return true;
+}
+
+string ValidaCodigo(){
+    string codigo;
+    while (true) {
+        cin>>codigo;
+        if (ValidarCodigo(codigo)){
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return codigo;
+        } else {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout<<"Código no válido. Por favor, ingrese un código en el formato (Ejemplo: 2024-119009)."<<endl;
+        }
+    }
+}
+
 void menu(){
-	int op,c;
+	int op,c=1;
 	cout<<setw(10)<<"BIENVENIDO DOCENTE"<<endl;
 	cout<<"-------------------------------------\n";
-	cout<<"Ingrese su nombre: ";getline(cin, doc.nombre);
-	cout<<"Ingrese apellido: ";getline(cin, doc.apellidos);
+	cout<<"Ingrese su nombre: ";
+	doc.nombre=ValidaTexto();
+	cout<<"Ingrese apellido: ";
+	doc.apellidos=ValidaTexto();
 	system("pause");
 	system("cls");
 	do{
@@ -60,10 +138,11 @@ void menu(){
 		cout<<"\t3. Reiniciar notas\n";
 		cout<<"\t4. Imprimir notas\n";	//1. Aprobados 2. Desaprobados 3. En general 0. volver	
 		cout<<"\t5. Buscar alumnos\n"; //1. Buscar por codigo 1.Quitar notas 2. Agregar notas	
-		cout<<"\t6. INGRESE LA CANTIDAD DE NOTAS QUE QUIERE ANADIR\n";
-		cout<<"\t0. Salir\n";
+		cout<<"\t6. Modificar casillas de notas ("<<c<<" casillas)\n";
+		cout<<"\t7. Salir\n";
 		cout<<"--------------------------------------"<<endl;
-		cout<<"Seleccione una opcion: ";cin>>op;
+		cout<<"Seleccione una opcion: ";
+		op=ValidaEntero();
 		switch(op){
 			case 1:
 				system("cls");
@@ -87,14 +166,15 @@ void menu(){
 				break;
 			case 6:
 				system("cls");
-				cout<<"Ingrese la cantidad (1-10): ";cin>>c;
+				cout<<"Ingrese la cantidad (1-10): ";
+				c=ValidaEntero();
 				if(c>10||c<1){
 					cout<<"\nIngrese una cantidad no mayor que 10 ni menor que 1 \n\n";
 				}
 				system("pause");
 				system("cls");
 				break;
-			case 0:
+			case 7:
 				cout<<"Cerrando programa";
            			for(int i=1;i<=3;i++){
             			cout<<".";
@@ -109,19 +189,20 @@ void menu(){
           		system("cls");
           	 	break;
 		}
-	}while(op!=0);
+	}while(op!=7);
 	return;
 }
 
 void borrarnota(int n,int c){
 	int b;
-	cout<<"Ingrese la casilla de la nota que quiere eliminar ("<<c<<"): ";cin>>b;
+	cout<<"Ingrese la casilla de la nota que quiere eliminar ("<<c<<"): ";
+	b=ValidaEntero();
 	if(b<=c&&b>=0){
 	doc.alu[n].notas[b-1]=0;
 	doc.alu[n].profinal=(suma(n,c-1))/c;
 	system("cls");
 	return;
-	} else{
+	} else {
 		cout<<"Ingrese primero la cantidad de notas o ingrese nuevo: \n";
 		system("pause");
 		system("cls");
@@ -131,13 +212,15 @@ void borrarnota(int n,int c){
 
 void agregarnota(int n,int c){
 	int b;
-	cout<<"Ingrese la casilla de la nota que quieres agregar ("<<c<<"): ";cin>>b;
+	cout<<"Ingrese la casilla de la nota que quieres agregar ("<<c<<"): ";
+	b=ValidaEntero();
 	if(b<=c&&b>=0){
-	cout<<"Ingrese la nota: ";cin>>doc.alu[n].notas[b-1];
+	cout<<"Ingrese la nota: ";
+	doc.alu[n].notas[b-1]=ValidaEntero();
 	doc.alu[n].profinal=(suma(n,c-1))/c;
 	system("cls");
 	return;
-	}else{
+	} else {
 		cout<<"Ingrese primero la cantidad de notas o ingrese nuevo: \n";
 		system("pause");
 		system("cls");
@@ -161,11 +244,15 @@ void agregaralumnos(){
 	do{
 		cin.ignore();
 		cout<<"AGREGANDO ALUMNO "<<ca+1<<": \n";
-		cout<<"Nombre: ";getline(cin,doc.alu[ca].name);
-		cout<<"Apellido: ";getline(cin,doc.alu[ca].last);
-		cout<<"Codigo: ";cin>>doc.alu[ca].codigo;
+		cout<<"Nombre: ";
+		doc.alu[ca].name=ValidaTexto();
+		cout<<"Apellido: ";
+		doc.alu[ca].last=ValidaTexto();
+		cout<<"Codigo: ";
+		doc.alu[ca].codigo=ValidaCodigo();
 		ca++;
-		cout<<"Desea seguir agregando alumnos?(Si:1)(No:0): ";cin>>n;
+		cout<<"Desea seguir agregando alumnos? (Si:1) (No:0): ";
+		cin>>n;
 		if(n==1){
 			k=true;
 		} else{
@@ -189,7 +276,8 @@ void imprimirnotas(int c){
 	cout<<"4.Notas Generales"<<endl;
 	cout<<"5.Salir"<<endl;
 	
-	cout<<"Seleccione una opcion: ";cin>>op;
+	cout<<"Seleccione una opcion: ";
+	op=ValidaEntero();
 		switch(op){
 			case 1:
 				system("cls");
@@ -215,7 +303,8 @@ void imprimirnotas(int c){
     			quicksort(0,ca-1);
     			for (int i = 0; i < ca ; i++) {
         			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-        			gotoxy(50,i+3);cout<<doc.alu[i].profinal;
+        			gotoxy(50,i+3);
+					cout<<doc.alu[i].profinal;
 					cout<<'\n';
     			}
     			cout<<endl;
@@ -254,9 +343,10 @@ void imprimirnotas(int c){
 }
 
 void buscaralumnos(int c){
-	int k;
+	string k;
 	int b;
-	cout<<"INGRESE EL CODIGO DE UN ALUMNO: ";cin>>k;
+	cout<<"INGRESE EL CODIGO DE UN ALUMNO: ";
+	k=ValidaCodigo();
 	bool encontrado=false;
 	for(int i=0;i<ca;i++){
 		if(doc.alu[i].codigo==k){
@@ -276,7 +366,8 @@ void buscaralumnos(int c){
 				cout<<doc.alu[b].notas[i]<<" ";
 			}
 			cout<<endl;
-			cout<<"1. Borrar nota\n2. Agregar nota\n0. Volver\nSeleccione una opcion: ";cin>>op;
+			cout<<"1. Borrar nota\n2. Agregar nota\n0. Volver\nSeleccione una opcion: ";
+			op=ValidaEntero();
 			switch(op){
 				case 1:
 					system("cls");
@@ -312,7 +403,7 @@ void reiniciarnotas(){
 	cout<<"-----------------------------------------------"<<endl;
 	cout<<"¿ESTAS SEGURO QUE QUIERES REINICIAR LAS NOTAS?"<<endl;
 	cout<<"      1.   NO                    2.   SI      "<<endl;
-	cin>>opc;
+	opc=ValidaEntero();
 	switch (opc)
 	{
 	case 1:
@@ -335,13 +426,13 @@ void reiniciarnotas(){
 }
 
 void eliminaralumnos(){
-	int cod;
+	string cod;
 	if(ca>=0){
 	cout<<"---------------Elimnar alumnos-----------------"<<endl;
 	cout<<"-----------------------------------------------"<<endl;
 	cout<<endl;
     cout<<"Ingrese el codigo del alumno a eliminar: ";
-    cin>>cod;
+    cod=ValidaCodigo();
     
     int i;
     for(i = 0; i < ca; i++) {
@@ -357,7 +448,7 @@ void eliminaralumnos(){
         ca--;
         cout<<"Alumno eliminado con exito.\n";
     }
-	}else{
+	} else {
 		cout<<"No hay registros de alumnos. \n";
 	}
 	system("pause");
@@ -374,7 +465,8 @@ void aprovados(){
 	for(int i=0; i<ca;i++){
 		if(doc.alu[i].profinal>=11){
 			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-			gotoxy(50,e+3);cout<<doc.alu[i].profinal;
+			gotoxy(50,e+3);
+			cout<<doc.alu[i].profinal;
 			cout<<'\n';	
 			e++;
 		}
@@ -390,7 +482,8 @@ void desaprovados(){
 	for(int i=0; i<ca;i++){
 		if(doc.alu[i].profinal<11){
 			cout<<doc.alu[i].name<<" "<<doc.alu[i].last;
-			gotoxy(50,e+3);cout<<doc.alu[i].profinal;
+			gotoxy(50,e+3);
+			cout<<doc.alu[i].profinal;
 			cout<<'\n';	
 			e++;
 		}
